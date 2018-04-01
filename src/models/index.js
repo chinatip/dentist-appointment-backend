@@ -1,0 +1,1 @@
+export Dentist from './dentist'
