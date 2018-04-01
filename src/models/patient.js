@@ -18,7 +18,9 @@ var schema = new _mongoose2.default.Schema({
   __v: { type: Number, select: false },
   firstname: String,
   lastname: String,
+  phone: String,
+  facebook: String,
   deleted: { type: Boolean, default: false, select: false }
 });
 
-exports.default = _mongoose2.default.model('Dentist', schema);
+exports.default = _mongoose2.default.model('Patient', schema);

@@ -13,12 +13,14 @@ function _interopRequireDefault(obj) {
 }
 
 var Schema = _mongoose2.default.Schema;
+var ObjectId = Schema.Types.ObjectId;
 
 var schema = new _mongoose2.default.Schema({
   __v: { type: Number, select: false },
-  firstname: String,
-  lastname: String,
+  name: String,
+  detail: String,
+  price: String,
   deleted: { type: Boolean, default: false, select: false }
 });
 
-exports.default = _mongoose2.default.model('Dentist', schema);
+exports.default = _mongoose2.default.model('Treatment', schema);

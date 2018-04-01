@@ -1,12 +1,19 @@
-import { Router } from 'express'
-import { list, create, update, remove } from '../controllers/dentist'
+'use strict';
 
-const router = Router()
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-router.get('/list', list)
-router.get('/create', create)
+var _express = require('express');
 
-router.post('/update', update)
-router.post('/delete', remove)
+var _dentist = require('../controllers/dentist');
 
-export default router
+var router = (0, _express.Router)();
+
+router.get('/list', _dentist.list);
+router.get('/create', _dentist.create);
+
+router.post('/update', _dentist.update);
+router.post('/delete', _dentist.remove);
+
+exports.default = router;
