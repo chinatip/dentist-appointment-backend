@@ -15,7 +15,7 @@
   },
   "scripts": {
     "eslint": "eslint --quiet **/**/*.js **/*.js **.js",
-    "dev": "babel src -d src && node src/bin/server",
+    "dev": "babel-node src/bin/server",
     "build": "babel src --out-dir build --source-maps",
     "build:file": "babel src --out-file build/bundle.js --source-maps",
     "build:clear": "rm -rf build",

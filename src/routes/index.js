@@ -1,39 +1,17 @@
-'use strict';
+import { Router } from 'express'
+import dentists from './dentists'
+import clinics from './clinics'
+import treatments from './treatments'
+import patients from './patients'
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+const router = Router()
+router.get('/', (req, res) => {
+  res.status(200).send({ status: 'API service is running.' })
+})
 
-var _express = require('express');
+router.use('/dentists', dentists)
+router.use('/clinics', clinics)
+router.use('/treatments', treatments)
+router.use('/patients', patients)
 
-var _dentist = require('./dentist');
-
-var _dentist2 = _interopRequireDefault(_dentist);
-
-var _clinic = require('./clinic');
-
-var _clinic2 = _interopRequireDefault(_clinic);
-
-var _treatment = require('./treatment');
-
-var _treatment2 = _interopRequireDefault(_treatment);
-
-var _patient = require('./patient');
-
-var _patient2 = _interopRequireDefault(_patient);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
-
-var router = (0, _express.Router)();
-router.get('/', function (req, res) {
-  res.status(200).send({ status: 'Server API Running' });
-});
-
-router.use('/dentist', _dentist2.default);
-router.use('/clinic', _clinic2.default);
-router.use('/treatment', _treatment2.default);
-router.use('/patient', _patient2.default);
-
-exports.default = router;
+export default router
