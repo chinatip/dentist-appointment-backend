@@ -1,7 +1,10 @@
 import { Router } from 'express'
-import { list } from '../controllers/clinic'
+import { list, create, remove } from '../controllers/clinic'
 
 const router = Router()
 router.get('/list', list)
+
+router.post('/create', create)
+router.post('/remove', remove)
 
 export default router

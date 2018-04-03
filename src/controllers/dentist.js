@@ -1,6 +1,13 @@
 import { respondResult, respondSuccess, respondErrors } from '../utils'
 import Dentist from '../models/dentist'
 import _ from 'lodash'
+import Joi from 'joi'
+
+const schema = Joi.object().keys({
+  firstname: Joi.string(),
+  lastname: Joi.string(),
+  treatments: [Joi.string()]
+})
 
 export const list = async (req, res) => {
   try {
@@ -13,10 +20,12 @@ export const list = async (req, res) => {
 }
 
 export const create = async (req, res) => {
-  try {
-    const dentist = await Dentist.create({ firstname: 'ddd', lastname: 'llll' })
+  const dentist = Joi.validate(req.body, schema).value
 
-    respondResult(res)({ dentist })
+  try {
+    const newDentist = await Dentist.create(dentist).populate('dentists')
+
+    respondResult(res)({ dentist: newDentist })
   } catch (err) {
     respondErrors(res)(err)
   }
