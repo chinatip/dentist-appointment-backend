@@ -2,8 +2,7 @@ import { Router } from 'express'
 import { list, create, update, remove } from '../controllers/dentist'
 
 const router = Router()
-router.get('/list', list)
-
+router.post('/list', list)
 router.post('/create', create)
 router.post('/update', update)
 router.post('/delete', remove)
