@@ -12,7 +12,7 @@ const schema = Joi.object().keys({
 
 export const list = async (req, res) => {
   try {
-    const dentists = await Dentist.find({ deleted: false })
+    const dentists = await Dentist.find({ deleted: false }).populate('treatments')
 
     respondResult(res)({ dentists })
   } catch (err) {
@@ -24,7 +24,7 @@ export const create = async (req, res) => {
   const dentist = Joi.validate(req.body, schema).value
 
   try {
-    const newDentist = await Dentist.create(dentist).populate('treatments')
+    const newDentist = await Dentist.create(dentist)
 
     respondResult(res)({ dentist: newDentist })
   } catch (err) {

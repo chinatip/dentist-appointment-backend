@@ -1,11 +1,17 @@
 import { respondResult, respondSuccess, respondErrors } from '../utils'
 import Clinic from '../models/clinic'
-import Dentist from '../models/dentist'
+import Joi from 'joi'
 
+const schema = Joi.object().keys({
+  name: Joi.string(),
+  phone: Joi.string(),
+  location: Joi.object().optional(),
+  dentists: [Joi.string()]
+})
 
 export const list = async (req, res) => {
   try {
-    const clinics = await Clinic.find({ deleted: false }).populate('treatments')
+    const clinics = await Clinic.find({ deleted: false }).populate('dentists')
 
     respondResult(res)({ clinics })
   } catch (err) {
@@ -14,8 +20,26 @@ export const list = async (req, res) => {
 }
 
 export const create = async (req, res) => {
+  const clinic = Joi.validate(req.body, schema).value
+
   try {
-    const clinic = await Clinic.create({ name: 'clinic1', phone: '888', dentists: ['5ac08b43585919370774d7d4', '5ac1035dcca20d4303ff4c8a'] })
+    const newClinic = await Clinic.create(clinic)
+
+    respondResult(res)({ clinic: newClinic })
+  } catch (err) {
+    respondErrors(res)(err)
+  }
+}
+
+export const update = async (req, res) => {
+  try {
+    const availableFields = ['name', 'phone', 'location', 'dentists']
+    const { _id, ...body } = req.body
+    const clinic = await Clinic.findById({ _id })
+    _.map(availableFields, (field) => {
+      clinic[field] = body[field] || clinic[field]
+    })
+    clinic.save()
 
     respondResult(res)({ clinic })
   } catch (err) {

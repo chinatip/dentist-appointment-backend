@@ -6,6 +6,7 @@ var schema = new Schema({
   __v: { type: Number, select: false },
   name: String,
   phone: String,
+  location: Object,
   dentists: [{ type: ObjectId, ref: 'Dentist' }],
   deleted: { type: Boolean, default: false, select: false }
 })
