@@ -6,6 +6,7 @@ import Joi from 'joi'
 const schema = Joi.object().keys({
   firstname: Joi.string(),
   lastname: Joi.string(),
+  phone: Joi.string().optional(),
   treatments: [Joi.string()]
 })
 
@@ -23,7 +24,7 @@ export const create = async (req, res) => {
   const dentist = Joi.validate(req.body, schema).value
 
   try {
-    const newDentist = await Dentist.create(dentist).populate('dentists')
+    const newDentist = await Dentist.create(dentist).populate('treatments')
 
     respondResult(res)({ dentist: newDentist })
   } catch (err) {
@@ -33,15 +34,15 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const availableFields = ['firstname', 'lastname']
+    const availableFields = ['firstname', 'lastname', 'phone', 'treatments']
     const { _id, ...body } = req.body
     const dentist = await Dentist.findById({ _id })
     _.map(availableFields, (field) => {
       dentist[field] = body[field] || dentist[field]
     })
-    dentist.save()
+    newDentist.save()
 
-    respondResult(res)({ dentist })
+    respondResult(res)({ dentist: newDentist })
   } catch (err) {
     respondErrors(res)(err)
   }
