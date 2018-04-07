@@ -5,7 +5,7 @@ import Joi from 'joi'
 const schema = Joi.object().keys({
   name: Joi.string(),
   phone: Joi.string(),
-  location: Joi.object().optional(),
+  address: Joi.object().optional(),
   dentists: [Joi.string()]
 })
 
@@ -33,7 +33,7 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const availableFields = ['name', 'phone', 'location', 'dentists']
+    const availableFields = ['name', 'phone', 'address', 'dentists']
     const { _id, ...body } = req.body
     const clinic = await Clinic.findById({ _id })
     _.map(availableFields, (field) => {

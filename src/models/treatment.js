@@ -6,6 +6,7 @@ var schema = new Schema({
   name: String,
   detail: String,
   price: String,
+  timeUnit: Number,
   deleted: { type: Boolean, default: false, select: false }
 })
 

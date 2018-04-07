@@ -1,14 +1,13 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
-const { ObjectId } = Schema.Types
 
 var schema = new Schema({
   __v: { type: Number, select: false },
-  name: String,
-  phone: String,
-  address: Object,
-  dentists: [{ type: ObjectId, ref: 'Dentist' }],
+  dentist: { type: ObjectId, ref: 'Dentist' },
+  clinic: { type: ObjectId, ref: 'Clinic' },
+  startTime: Date,
+  endTime: Date,
   deleted: { type: Boolean, default: false, select: false }
 })
 
-export default mongoose.model('Clinic', schema)
+export default mongoose.model('DentistTimeslot', schema)
