@@ -7,7 +7,7 @@ var schema = new Schema({
   lastname: String,
   phone: String,
   address: Object,
-  facebook: String,
+  facebookId: String,
   deleted: { type: Boolean, default: false, select: false }
 })
 

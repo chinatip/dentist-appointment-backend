@@ -5,7 +5,7 @@ var schema = new Schema({
   __v: { type: Number, select: false },
   name: String,
   detail: String,
-  price: String,
+  price: Number,
   timeUnit: Number,
   deleted: { type: Boolean, default: false, select: false }
 })

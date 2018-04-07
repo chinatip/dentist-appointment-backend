@@ -1,8 +1,9 @@
-import { respondResult, respondSuccess, respondErrors } from '../utils'
-import Dentist from '../models/dentist'
 import _ from 'lodash'
 import Joi from 'joi'
+import { respondResult, respondSuccess, respondErrors } from '../utils'
+import Dentist from '../models/dentist'
 
+const availableFields = ['firstname', 'lastname', 'phone', 'treatments']
 const schema = Joi.object().keys({
   firstname: Joi.string(),
   lastname: Joi.string(),
@@ -34,15 +35,15 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const availableFields = ['firstname', 'lastname', 'phone', 'treatments']
     const { _id, ...body } = req.body
     const dentist = await Dentist.findById({ _id })
+    console.log(dentist)
     _.map(availableFields, (field) => {
       dentist[field] = body[field] || dentist[field]
     })
-    newDentist.save()
+    dentist.save()
 
-    respondResult(res)({ dentist: newDentist })
+    respondResult(res)({ dentist })
   } catch (err) {
     respondErrors(res)(err)
   }
@@ -55,7 +56,7 @@ export const remove = async (req, res) => {
     dentist.deleted = true
     dentist.save()
 
-    respondSuccess(res)
+    respondSuccess(res)()
   } catch (err) {
     respondErrors(res)(err)
   }

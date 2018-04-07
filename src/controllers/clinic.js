@@ -1,7 +1,9 @@
+import _ from 'lodash'
+import Joi from 'joi'
 import { respondResult, respondSuccess, respondErrors } from '../utils'
 import Clinic from '../models/clinic'
-import Joi from 'joi'
 
+const availableFields = ['name', 'phone', 'address', 'dentists']
 const schema = Joi.object().keys({
   name: Joi.string(),
   phone: Joi.string(),
@@ -33,7 +35,6 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const availableFields = ['name', 'phone', 'address', 'dentists']
     const { _id, ...body } = req.body
     const clinic = await Clinic.findById({ _id })
     _.map(availableFields, (field) => {
@@ -54,7 +55,7 @@ export const remove = async (req, res) => {
     clinic.deleted = true
     clinic.save()
 
-    respondSuccess(res)
+    respondSuccess(res)()
   } catch (err) {
     respondErrors(res)(err)
   }
