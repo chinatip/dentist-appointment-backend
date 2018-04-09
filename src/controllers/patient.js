@@ -3,11 +3,13 @@ import Joi from 'joi'
 import { respondResult, respondSuccess, respondErrors } from '../utils'
 import Patient from '../models/patient'
 
-const availableFields = ['firstname', 'lastname', 'phone', 'address', 'facebookId']
+const availableFields = ['firstname', 'lastname', 'phone', 'ID_type', 'ID', 'address', 'facebookId']
 const schema = Joi.object().keys({
   firstname: Joi.string(),
   lastname: Joi.string(),
   phone: Joi.string(),
+  ID_type: Joi.string(),
+  ID: Joi.string(),
   address: Joi.object().optional(),
   facebookId: Joi.string()
 })
@@ -16,7 +18,7 @@ export const list = async (req, res) => {
   try {
     const patients = await Patient.find({ deleted: false })
 
-    respondResult(res)({ patients })
+    respondResult(res)(patients)
   } catch (err) {
     respondErrors(res)(err)
   }
@@ -28,7 +30,7 @@ export const create = async (req, res) => {
   try {
     const newPatient = await Patient.create(patient)
 
-    respondResult(res)({ patient: newPatient })
+    respondResult(res)(newPatient)
   } catch (err) {
     respondErrors(res)(err)
   }
@@ -43,7 +45,7 @@ export const update = async (req, res) => {
     })
     patient.save()
 
-    respondResult(res)({ patient })
+    respondResult(res)(patient)
   } catch (err) {
     respondErrors(res)(err)
   }

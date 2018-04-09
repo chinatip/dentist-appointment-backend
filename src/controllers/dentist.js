@@ -15,7 +15,7 @@ export const list = async (req, res) => {
   try {
     const dentists = await Dentist.find({ deleted: false }).populate('treatments')
 
-    respondResult(res)({ dentists })
+    respondResult(res)(dentists)
   } catch (err) {
     respondErrors(res)(err)
   }
@@ -27,7 +27,7 @@ export const create = async (req, res) => {
   try {
     const newDentist = await Dentist.create(dentist)
 
-    respondResult(res)({ dentist: newDentist })
+    respondResult(res)(newDentist)
   } catch (err) {
     respondErrors(res)(err)
   }
@@ -37,13 +37,13 @@ export const update = async (req, res) => {
   try {
     const { _id, ...body } = req.body
     const dentist = await Dentist.findById({ _id })
-    console.log(dentist)
+
     _.map(availableFields, (field) => {
       dentist[field] = body[field] || dentist[field]
     })
     dentist.save()
 
-    respondResult(res)({ dentist })
+    respondResult(res)(dentist)
   } catch (err) {
     respondErrors(res)(err)
   }

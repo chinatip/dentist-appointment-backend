@@ -6,6 +6,8 @@ var schema = new Schema({
   firstname: String,
   lastname: String,
   phone: String,
+  ID_type: String,
+  ID: String,
   address: Object,
   facebookId: String,
   deleted: { type: Boolean, default: false, select: false }

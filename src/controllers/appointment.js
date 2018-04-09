@@ -13,9 +13,9 @@ const schema = Joi.object().keys({
 
 export const list = async (req, res) => {
   try {
-    let appointments = await Appointment.find({ deleted: false }).deepPopulate('slot slot.dentist slot.clinic')
+    let appointments = await Appointment.find({ deleted: false }).deepPopulate('patient treatment slot slot.dentist slot.clinic')
 
-    respondResult(res)({ appointments })
+    respondResult(res)(appointments)
   } catch (err) {
     respondErrors(res)(err)
   }
@@ -27,7 +27,7 @@ export const create = async (req, res) => {
   try {
     const newAppointment = await Appointment.create(appointment)
 
-    respondResult(res)({ appointment: newAppointment })
+    respondResult(res)(newAppointment)
   } catch (err) {
     respondErrors(res)(err)
   }
@@ -42,7 +42,7 @@ export const update = async (req, res) => {
     })
     appointment.save()
 
-    respondResult(res)({ appointment })
+    respondResult(res)(appointment)
   } catch (err) {
     respondErrors(res)(err)
   }

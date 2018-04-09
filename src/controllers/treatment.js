@@ -15,7 +15,7 @@ export const list = async (req, res) => {
   try {
     const treatments = await Treatment.find({ deleted: false })
 
-    respondResult(res)({ treatments })
+    respondResult(res)(treatments)
   } catch (err) {
     respondErrors(res)(err)
   }
@@ -27,7 +27,7 @@ export const create = async (req, res) => {
   try {
     const newTreatment = await Treatment.create(treatment)
 
-    respondResult(res)({ treatment: newTreatment })
+    respondResult(res)(newTreatment)
   } catch (err) {
     respondErrors(res)(err)
   }
@@ -42,7 +42,7 @@ export const update = async (req, res) => {
     })
     treatment.save()
 
-    respondResult(res)({ treatment })
+    respondResult(res)(treatment)
   } catch (err) {
     respondErrors(res)(err)
   }

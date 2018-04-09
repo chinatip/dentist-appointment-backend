@@ -15,7 +15,7 @@ export const list = async (req, res) => {
   try {
     const clinics = await Clinic.find({ deleted: false }).populate('dentists')
 
-    respondResult(res)({ clinics })
+    respondResult(res)(clinics)
   } catch (err) {
     respondErrors(res)(err)
   }
@@ -27,7 +27,7 @@ export const create = async (req, res) => {
   try {
     const newClinic = await Clinic.create(clinic)
 
-    respondResult(res)({ clinic: newClinic })
+    respondResult(res)(newClinic)
   } catch (err) {
     respondErrors(res)(err)
   }
@@ -42,7 +42,7 @@ export const update = async (req, res) => {
     })
     clinic.save()
 
-    respondResult(res)({ clinic })
+    respondResult(res)(clinic)
   } catch (err) {
     respondErrors(res)(err)
   }
