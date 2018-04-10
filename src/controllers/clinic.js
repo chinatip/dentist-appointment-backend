@@ -13,7 +13,7 @@ const schema = Joi.object().keys({
 
 export const list = async (req, res) => {
   try {
-    const clinics = await Clinic.find({ deleted: false }).populate('dentists')
+    const clinics = await Clinic.find({ deleted: false }).deepPopulate('dentists dentists.treatments')
 
     respondResult(res)(clinics)
   } catch (err) {
