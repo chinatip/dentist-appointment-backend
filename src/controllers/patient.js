@@ -24,6 +24,17 @@ export const list = async (req, res) => {
   }
 }
 
+export const findById = async (req, res) => {
+  try {
+    const { _id } = req.body
+    const patient = await Patient.findById({ _id })
+
+    respondResult(res)(patient)
+  } catch (err) {
+    respondErrors(res)(err)
+  }
+}
+
 export const create = async (req, res) => {
   const patient = Joi.validate(req.body, schema).value
 

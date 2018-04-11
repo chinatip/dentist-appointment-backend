@@ -16,6 +16,6 @@ router.use('/clinics', clinics)
 router.use('/treatments', treatments)
 router.use('/patients', patients)
 router.use('/appointments', appointments)
-router.use('/dentist-timeslots', dentistTimeslot)
+router.use('/dentistTimeslots', dentistTimeslot)
 
 export default router

@@ -21,6 +21,17 @@ export const list = async (req, res) => {
   }
 }
 
+export const findById = async (req, res) => {
+  try {
+    const { _id } = req.body
+    const dentist = await Dentist.findById({ _id }).populate('treatments')
+
+    respondResult(res)(dentist)
+  } catch (err) {
+    respondErrors(res)(err)
+  }
+}
+
 export const create = async (req, res) => {
   const dentist = Joi.validate(req.body, schema).value
 
