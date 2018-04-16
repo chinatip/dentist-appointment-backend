@@ -17,7 +17,7 @@ export const list = async(req, res) => {
         const clinics = await Clinic.find({ deleted: false }).deepPopulate('dentists dentists.treatments')
 
         respondResult(res)(clinics)
-        sendnotify.Sendnoti("1");
+        sendnotify.Sendnoti("1", "");
     } catch (err) {
         respondErrors(res)(err)
     }

@@ -5,10 +5,11 @@ import treatments from './treatments'
 import patients from './patients'
 import appointments from './appointments'
 import dentistTimeslot from './dentist-timeslots'
+import notificationcontroller from './notificationcontroller'
 
 const router = Router()
 router.get('/', (req, res) => {
-  res.status(200).send({ status: 'API service is running.' })
+    res.status(200).send({ status: 'API service is running.' })
 })
 
 router.use('/dentists', dentists)
@@ -17,5 +18,6 @@ router.use('/treatments', treatments)
 router.use('/patients', patients)
 router.use('/appointments', appointments)
 router.use('/dentistTimeslots', dentistTimeslot)
+router.use('/notification', notificationcontroller)
 
 export default router
