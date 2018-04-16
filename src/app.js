@@ -22,13 +22,4 @@ app.use('/', routes)
 
 export default app
 
-// var counttime = setInterval(function() {
-//     var d = new Date();
-//     console.log(d.getSeconds());
-
-// }, 1000); //second 1000 milli 100
-// var counttime2 = setInterval(function() {
-//     var d = new Date();
-//     console.log("M " + d.getMinutes());
-
-// }, 60000); //second 1000 milli 100 60000 minute
+//server: https://pacific-inlet-14356.herokuapp.com
