@@ -46,7 +46,7 @@ export const findById = async(req, res) => {
 
 module.exports.Sendnoti = Sendnoti;
 
-var timestart = true;
+var timestart = false;
 var counttime2 = setInterval(function() {
     if (timestart) {
         var d = new Date();
