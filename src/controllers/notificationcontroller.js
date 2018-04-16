@@ -46,13 +46,13 @@ export const findById = async(req, res) => {
 
 module.exports.Sendnoti = Sendnoti;
 
-var timestart = false;
+var timestart = true;
 var counttime2 = setInterval(function() {
     if (timestart) {
         var d = new Date();
         var minute = d.getMinutes()
         console.log("M " + minute);
-        //loadlist(d);
+        loadlist(d);
         if (minute == 0) {
             console.log("new hour");
 
@@ -70,7 +70,13 @@ async function loadlist(date) {
             //console.log(cliniclist);
         var clinic1 = await getclinicByid(cliniclist[0]._id)
         console.log(clinic1);
-
+        console.log("---");
+        var dd = {
+            name: cliniclist[0].name,
+            address: cliniclist[0].address,
+        }
+        var clinic2 = await getclinic(dd)
+        console.log(clinic2);
         console.log("---");
         var appointlist = await getappointlist()
         if (appointlist.length == 0) {
@@ -99,7 +105,7 @@ async function loadlist(date) {
 async function getcliniclist() {
     //const clinics = Clinic.find({ deleted: false }).deepPopulate('dentists dentists.treatments')
     try {
-        const cl = await Clinic.find({ deleted: false })
+        const cl = await Clinic.find({ deleted: false }).deepPopulate('dentists dentists.treatments')
         return cl
     } catch (error) {
         return 'err'
@@ -115,12 +121,12 @@ async function getcliniclist() {
 }
 
 function getclinicByid(id) {
-    return Clinic.findById(id)
+    return Clinic.findById(id).deepPopulate('dentists dentists.treatments')
 
 }
 
 function getclinicByname(data) {
-    return Clinic.findOne({ name: { '$regex': data, '$options': 'i' } })
+    return Clinic.findOne({ name: { '$regex': data, '$options': 'i' } }).deepPopulate('dentists dentists.treatments')
         // new RegExp(data, 'i')
         // Clinic.findOne({ name: { '$regex': data, '$options': 'i' } }, function(error, comments) {
         //     if (error) { console.log('error'); } else {
@@ -130,33 +136,41 @@ function getclinicByname(data) {
 
 }
 
+function getclinic(data) {
+    return Clinic.findOne(data).deepPopulate('dentists dentists.treatments')
+
+}
+
+
 function getappointlist() {
-    return Appointment.find({ deleted: false })
-        // Appointment.find({ deleted: false }, function(error, comments) {
-        //     if (error) {
-        //         console.log('error');
-        //     } else {
-        //         console.log(comments); 
-        //         return comments;
-        //     }
-        // });
+    return Appointment.find({ deleted: false }).deepPopulate('patient treatment slot slot.dentist slot.clinic')
+
+    // Appointment.find({ deleted: false }, function(error, comments) {
+    //     if (error) {
+    //         console.log('error');
+    //     } else {
+    //         console.log(comments); 
+    //         return comments;
+    //     }
+    // });
 
 
 }
 
 function getappointByid(id) {
-    return Appointment.findById(id)
+    return Appointment.findById(id).deepPopulate('patient treatment slot slot.dentist slot.clinic')
 
 }
 
 function getpatientlist() {
-    Patient.find({ deleted: false }, function(error, comments) {
-        if (error) {
-            console.log('error');
-        } else {
-            console.log(comments);
-        }
-    });
+    return Patient.find({ deleted: false })
+        // Patient.find({ deleted: false }, function(error, comments) {
+        //     if (error) {
+        //         console.log('error');
+        //     } else {
+        //         console.log(comments);
+        //     }
+        // });
 
 }
 
@@ -167,7 +181,7 @@ function getpatientByid(id) {
 
 async function getslotlist() {
     try {
-        const sl = await DentistTimeslot.find({ deleted: false })
+        const sl = await DentistTimeslot.find({ deleted: false }).populate('dentist').populate('clinic')
         return sl
     } catch (error) {
         return 'err'
@@ -175,6 +189,6 @@ async function getslotlist() {
 }
 
 function getslotByid(id) {
-    return DentistTimeslot.findById(id)
+    return DentistTimeslot.findById(id).populate('dentist').populate('clinic')
 
 }
