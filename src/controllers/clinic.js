@@ -46,6 +46,23 @@ export const create = async(req, res) => {
     }
 }
 
+export const multicreate = async(req, res) => {
+    const list = req.body;
+
+    try {
+        list.forEach(element => {
+            const item = Joi.validate(element, schema).value
+            console.log(item);
+            Clinic.create(item)
+
+        });
+
+        respondResult(res)("Success")
+    } catch (err) {
+        respondErrors(res)(err)
+    }
+}
+
 export const update = async(req, res) => {
     try {
         const { _id, ...body } = req.body

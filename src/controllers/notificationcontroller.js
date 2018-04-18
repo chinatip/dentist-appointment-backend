@@ -57,33 +57,61 @@ function updateStatus(appoint) {
 export const findById = async(req, res) => {
     try {
         const { id } = req.body;
-        //let appointment = await Appointment.findById({ _id }).deepPopulate('patient treatment slot slot.dentist slot.clinic')
         console.log(id);
+        // let result = "your id is " + id + ", right?";
+        // respondResult(res)(result)
 
-        let result = "your id is " + id + ", right?";
-        respondResult(res)(result)
+        var sendtext = "";
+        var appointlist = await getappointlist();
+        if (appointlist.length == 0) {
+            console.log("no appointment");
+            sendtext = "You have no appointment";
+            respondResult(res)(sendtext)
+        } else {
+            appointlist.forEach(appoint => {
+                var apppatient = appoint.patient;
+                var patientid = apppatient.facebookId;
+                if (id === patientid) {
+                    var appointslot = appoint.slot;
+                    var appointdate = new Date(appointslot.startTime);
+                    var apphour = appointdate.getHours();
+                    var appminute = appointdate.getMinutes();
+                    var sendtext = "you have appointment at " + apphour + "." + appminute + " on " + appointdate.getDate() + "/" + appointdate.getMonth();
+                    var clinic = appointslot.clinic;
+                    sendtext += " in " + clinic.name;
+
+                    console.log("have appointment at " + apphour + "." + appminute);
+                    respondResult(res)(sendtext)
+                    return;
+                }
+
+            });
+        }
+
     } catch (err) {
-        respondErrors(res)(err)
+        var text = "Find appointment error"
+        respondErrors(res)(text)
     }
 }
 
 module.exports.Sendnoti = Sendnoti;
 module.exports.updateStatus = updateStatus;
 
-var timestart = false;
+var timestart = true;
 var counttime2 = setInterval(function() {
     if (timestart) {
         var d = new Date();
         var minute = d.getMinutes()
         var hour = d.getHours()
-        console.log("M " + minute);
+        console.log("H " + hour + " M " + minute);
         //loadlist(d);
         if (minute == 0) {
             console.log("new hour");
+            loadnotilist();
 
         } else {
             console.log("current hour");
-            //loadnotilist();
+            loadnotilist();
         }
     } else {
         // console.log("stop");
@@ -111,7 +139,7 @@ async function loadnotilist() {
                 if (appointdate.getDate() === cday && appointdate.getMonth() === cmonth) {
                     var apphour = appointdate.getHours();
                     var appminute = appointdate.getMinutes();
-                    if (apphour - 1 === chour) {
+                    if (apphour - 1 === chour && appminute === cminute) {
                         var sendtext = "you have appointment at " + apphour + "." + appminute;
                         var clinic = appointslot.clinic;
                         sendtext += " in " + clinic.name;
@@ -119,12 +147,15 @@ async function loadnotilist() {
 
                         var sendid = apppatient.facebookId;
                         Sendnoti(sendtext, sendid);
+                        console.log("have appointment at " + apphour + "." + appminute);
+
                     }
                 }
 
             });
         }
     } catch (error) {
+        console.log("check appointment error");
 
     }
 }

@@ -5,69 +5,86 @@ import Appointment from '../models/appointment'
 
 const availableFields = ['patient', 'slot', 'treatment', 'status']
 const schema = Joi.object().keys({
-  patient: Joi.string(),
-  slot: Joi.string(),
-  treatment: Joi.string(),
-  status: Joi.string()
+    patient: Joi.string(),
+    slot: Joi.string(),
+    treatment: Joi.string(),
+    status: Joi.string()
 })
 
-export const list = async (req, res) => {
-  try {
-    let appointments = await Appointment.find({ deleted: false }).deepPopulate('patient treatment slot slot.dentist slot.clinic')
+export const list = async(req, res) => {
+    try {
+        let appointments = await Appointment.find({ deleted: false }).deepPopulate('patient treatment slot slot.dentist slot.clinic')
 
-    respondResult(res)(appointments)
-  } catch (err) {
-    respondErrors(res)(err)
-  }
+        respondResult(res)(appointments)
+    } catch (err) {
+        respondErrors(res)(err)
+    }
 }
 
-export const findById = async (req, res) => {
-  try {
-    const { _id } = req.body
-    let appointment = await Appointment.findById({ _id }).deepPopulate('patient treatment slot slot.dentist slot.clinic')
+export const findById = async(req, res) => {
+    try {
+        const { _id } = req.body
+        let appointment = await Appointment.findById({ _id }).deepPopulate('patient treatment slot slot.dentist slot.clinic')
 
-    respondResult(res)(appointment)
-  } catch (err) {
-    respondErrors(res)(err)
-  }
+        respondResult(res)(appointment)
+    } catch (err) {
+        respondErrors(res)(err)
+    }
 }
 
-export const create = async (req, res) => {
-  const appointment = Joi.validate(req.body, schema).value
+export const create = async(req, res) => {
+    const appointment = Joi.validate(req.body, schema).value
 
-  try {
-    const newAppointment = await Appointment.create(appointment)
+    try {
+        const newAppointment = await Appointment.create(appointment)
 
-    respondResult(res)(newAppointment)
-  } catch (err) {
-    respondErrors(res)(err)
-  }
+        respondResult(res)(newAppointment)
+    } catch (err) {
+        respondErrors(res)(err)
+    }
 }
 
-export const update = async (req, res) => {
-  try {
-    const { _id, ...body } = req.body
-    const appointment = await Appointment.findById({ _id })
-    _.map(availableFields, (field) => {
-      appointment[field] = body[field] || appointment[field]
-    })
-    appointment.save()
+export const multicreate = async(req, res) => {
+    const list = req.body;
 
-    respondResult(res)(appointment)
-  } catch (err) {
-    respondErrors(res)(err)
-  }
+    try {
+        list.forEach(element => {
+            const item = Joi.validate(element, schema).value
+            console.log(item);
+            Appointment.create(item)
+
+        });
+
+        respondResult(res)("Success")
+    } catch (err) {
+        respondErrors(res)(err)
+    }
 }
 
-export const remove = async (req, res) => {
-  try {
-    const { _id } = req.body
-    const appointment = await Appointment.findById({ _id })
-    appointment.deleted = true
-    appointment.save()
+export const update = async(req, res) => {
+    try {
+        const { _id, ...body } = req.body
+        const appointment = await Appointment.findById({ _id })
+        _.map(availableFields, (field) => {
+            appointment[field] = body[field] || appointment[field]
+        })
+        appointment.save()
 
-    respondSuccess(res)()
-  } catch (err) {
-    respondErrors(res)(err)
-  }
+        respondResult(res)(appointment)
+    } catch (err) {
+        respondErrors(res)(err)
+    }
+}
+
+export const remove = async(req, res) => {
+    try {
+        const { _id } = req.body
+        const appointment = await Appointment.findById({ _id })
+        appointment.deleted = true
+        appointment.save()
+
+        respondSuccess(res)()
+    } catch (err) {
+        respondErrors(res)(err)
+    }
 }
