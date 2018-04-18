@@ -37,19 +37,21 @@ function Sendnoti(data, sendid) {
     });
 }
 
-function updateStatus(appoint) {
-    var appointslot = appoint.slot;
-    var appointdate = new Date(appointslot.startTime);
-    var apphour = appointdate.getHours();
-    var appminute = appointdate.getMinutes();
-    var sendtext = "your appointment at " + apphour + "." + appminute;
-    var clinic = appointslot.clinic;
-    sendtext += " in " + clinic.name + " are approved";
-    var apppatient = appoint.patient;
+function updateStatus(appoint, appointbefore) {
+    if (appoint.status != appointbefore.status) {
 
-    var sendid = apppatient.facebookId;
-    Sendnoti(sendtext, sendid);
+        var appointslot = appoint.slot;
+        var appointdate = new Date(appointslot.startTime);
+        var apphour = appointdate.getHours();
+        var appminute = appointdate.getMinutes();
+        var sendtext = "your appointment status at " + apphour + "." + appminute;
+        var clinic = appointslot.clinic;
+        sendtext += " in " + clinic.name + " are changed";
+        var apppatient = appoint.patient;
 
+        var sendid = apppatient.facebookId;
+        Sendnoti(sendtext, sendid);
+    }
 }
 
 
@@ -105,13 +107,13 @@ var counttime2 = setInterval(function() {
         var hour = d.getHours()
         console.log("H " + hour + " M " + minute);
         //loadlist(d);
-        if (minute == 0) {
+        if (minute == 0 || minute == 30) {
             console.log("new hour");
             loadnotilist();
 
         } else {
             console.log("current hour");
-            loadnotilist();
+            //loadnotilist();
         }
     } else {
         // console.log("stop");

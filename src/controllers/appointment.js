@@ -2,6 +2,7 @@ import _ from 'lodash'
 import Joi from 'joi'
 import { respondResult, respondSuccess, respondErrors } from '../utils'
 import Appointment from '../models/appointment'
+var sendnotify = require('./notificationcontroller');
 
 const availableFields = ['patient', 'slot', 'treatment', 'status']
 const schema = Joi.object().keys({
@@ -14,6 +15,8 @@ const schema = Joi.object().keys({
 export const list = async(req, res) => {
     try {
         let appointments = await Appointment.find({ deleted: false }).deepPopulate('patient treatment slot slot.dentist slot.clinic')
+
+        sendnotify.Sendnoti("1", "");
 
         respondResult(res)(appointments)
     } catch (err) {
@@ -65,10 +68,15 @@ export const update = async(req, res) => {
     try {
         const { _id, ...body } = req.body
         const appointment = await Appointment.findById({ _id })
+        const appointbefore = appointment
+
         _.map(availableFields, (field) => {
             appointment[field] = body[field] || appointment[field]
         })
         appointment.save()
+
+        const appointafter = appointment
+        sendnotify.updateStatus(appointafter, appointbefore)
 
         respondResult(res)(appointment)
     } catch (err) {
