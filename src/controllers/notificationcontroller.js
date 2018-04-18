@@ -109,6 +109,7 @@ var counttime2 = setInterval(function() {
         //loadlist(d);
         if (minute == 0 || minute == 30) {
             console.log("new hour");
+            //console.log("H " + hour + " M " + minute);
             loadnotilist();
 
         } else {
