@@ -23,4 +23,4 @@ app.use('/', routes)
 export default app
 
 //server: https://pacific-inlet-14356.herokuapp.com
-//import example mongoimport --host dentalcluster0-shard-00-00-xtuus.mongodb.net:27017 --db test --collection myData1 --drop --type json --file D:\finalproject\note\datatest.json --jsonArray --authenticationDatabase admin --ssl --username dental01 --password poompoom
+//import example mongoimport --host dentalcluster0-shard-00-00-xtuus.mongodb.net:27017 --db test --collection myData1 --drop --type json --file D:\finalproject\note\datatest.json --jsonArray --authenticationDatabase admin --ssl --username dental02 --password poompoom
