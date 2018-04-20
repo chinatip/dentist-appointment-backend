@@ -115,6 +115,7 @@ var counttime2 = setInterval(function() {
         } else {
             console.log("current hour");
             //loadnotilist();
+            loadnotilisttest();
         }
     } else {
         // console.log("stop");
@@ -157,6 +158,35 @@ async function loadnotilist() {
 
             });
         }
+    } catch (error) {
+        console.log("check appointment error");
+
+    }
+}
+
+async function loadnotilisttest() {
+    try {
+        var appointlist = await getappointlist();
+
+        appointlist.forEach(appoint => {
+            var appointslot = appoint.slot;
+            var appointdate = new Date(appointslot.startTime);
+            console.log(appointdate.getDate() + " " + appointdate.getMonth());
+            var apphour = appointdate.getHours();
+            var appminute = appointdate.getMinutes();
+            var sendtext = apphour + "." + appminute;
+            var clinic = appointslot.clinic;
+            sendtext += " in " + clinic.name + " " + appoint.status;
+            var apppatient = appoint.patient;
+            console.log(sendtext);
+            console.log(apppatient.firstname + " " + apppatient.lastname + " " + apppatient.facebookId);
+
+
+            console.log("-----------------------------");
+
+
+        });
+
     } catch (error) {
         console.log("check appointment error");
 
