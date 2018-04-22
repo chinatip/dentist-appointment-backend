@@ -42,3 +42,5 @@ config
 # build files
 build
 uploads
+package-lock.json
+yarn.lock
