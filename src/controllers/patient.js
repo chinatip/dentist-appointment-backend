@@ -35,6 +35,17 @@ export const findById = async(req, res) => {
     }
 }
 
+export const findByFBId = async(req, res) => {
+    try {
+        const { facebookId } = req.body
+        const patient = await Patient.findOne({ facebookId })
+
+        respondResult(res)(patient)
+    } catch (err) {
+        respondErrors(res)(err)
+    }
+}
+
 export const create = async(req, res) => {
     const patient = Joi.validate(req.body, schema).value
 
