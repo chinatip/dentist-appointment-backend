@@ -3,21 +3,22 @@ import Joi from 'joi'
 import { respondResult, respondSuccess, respondErrors } from '../utils'
 import Patient from '../models/patient'
 
-const availableFields = ['firstname', 'lastname', 'phone', 'ID_type', 'ID', 'address', 'facebookId']
+const availableFields = ['firstname', 'lastname', 'phone', 'ID_type', 'ID', 'address', 'facebookId', 'fileId']
 const schema = Joi.object().keys({
     firstname: Joi.string(),
     lastname: Joi.string(),
     phone: Joi.string(),
-    ID_type: Joi.string(),
-    ID: Joi.string(),
+    ID_type: Joi.string().optional(),
+    ID: Joi.string().optional(),
     address: Joi.object().optional(),
-    facebookId: Joi.string()
+    facebookId: Joi.string().optional(),
+    fileId: Joi.string().optional(),
 })
 
 export const list = async(req, res) => {
     try {
         const patients = await Patient.find({ deleted: false })
-
+        
         respondResult(res)(patients)
     } catch (err) {
         respondErrors(res)(err)
@@ -28,7 +29,7 @@ export const findById = async(req, res) => {
     try {
         const { _id } = req.body
         const patient = await Patient.findById({ _id })
-
+        
         respondResult(res)(patient)
     } catch (err) {
         respondErrors(res)(err)
@@ -39,7 +40,7 @@ export const findByFBId = async(req, res) => {
     try {
         const { facebookId } = req.body
         const patient = await Patient.findOne({ facebookId })
-
+        
         respondResult(res)(patient)
     } catch (err) {
         respondErrors(res)(err)
@@ -58,16 +59,15 @@ export const create = async(req, res) => {
     }
 }
 
-export const multicreate = async(req, res) => {
-    const list = req.body;
+export const multiCreate = async(req, res) => {
+    const list = req.body
 
     try {
         list.forEach(element => {
             const item = Joi.validate(element, schema).value
-            console.log(item);
+            console.log(item)
             Patient.create(item)
-
-        });
+        })
 
         respondResult(res)("Success")
     } catch (err) {
