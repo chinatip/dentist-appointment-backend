@@ -11,6 +11,7 @@ var schema = new Schema({
   treatment: { type: ObjectId, ref: 'Treatment' },
   report: { type: ObjectId, ref: 'Report' },
   status: String,
+  estimateTime: Number,
   deleted: { type: Boolean, default: false, select: false }
 })
 

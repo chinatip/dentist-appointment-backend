@@ -4,13 +4,14 @@ import { respondResult, respondSuccess, respondErrors } from '../utils'
 import Appointment from '../models/appointment'
 var sendnotify = require('./notificationcontroller');
 
-const availableFields = ['patient', 'slot', 'treatment', 'status', 'report']
+const availableFields = ['patient', 'slot', 'treatment', 'status', 'report', 'estimateTime']
 const schema = Joi.object().keys({
     patient: Joi.string(),
     slot: Joi.string(),
     treatment: Joi.string(),
     status: Joi.string(),
-    report: Joi.string().optional()
+    report: Joi.string().optional(),
+    estimateTime: Joi.number()
 })
 
 export const list = async(req, res) => {
