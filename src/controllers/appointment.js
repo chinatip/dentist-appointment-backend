@@ -48,7 +48,7 @@ export const create = async(req, res) => {
     }
 }
 
-export const multicreate = async(req, res) => {
+export const multiCreate = async(req, res) => {
     const list = req.body;
 
     try {
