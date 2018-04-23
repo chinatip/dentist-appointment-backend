@@ -7,13 +7,12 @@ const { ObjectId } = Schema.Types
 var schema = new Schema({
   __v: { type: Number, select: false },
   patient: { type: ObjectId, ref: 'Patient' },
-  slot: { type: ObjectId, ref: 'DentistTimeslot' },
-  treatment: { type: ObjectId, ref: 'Treatment' },
-  report: { type: ObjectId, ref: 'Report' },
-  status: String,
+  dentist: { type: ObjectId, ref: 'Dentist' },
+  clinic: { type: ObjectId, ref: 'Clinic' },
+  data: Object,
   deleted: { type: Boolean, default: false, select: false }
 })
 
 schema.plugin(deepPopulate)
 
-export default mongoose.model('Appointment', schema)
+export default mongoose.model('Report', schema)

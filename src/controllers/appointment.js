@@ -4,17 +4,18 @@ import { respondResult, respondSuccess, respondErrors } from '../utils'
 import Appointment from '../models/appointment'
 var sendnotify = require('./notificationcontroller');
 
-const availableFields = ['patient', 'slot', 'treatment', 'status']
+const availableFields = ['patient', 'slot', 'treatment', 'status', 'report']
 const schema = Joi.object().keys({
     patient: Joi.string(),
     slot: Joi.string(),
     treatment: Joi.string(),
-    status: Joi.string()
+    status: Joi.string(),
+    report: Joi.string().optional()
 })
 
 export const list = async(req, res) => {
     try {
-        let appointments = await Appointment.find({ deleted: false }).deepPopulate('patient treatment slot slot.dentist slot.clinic')
+        let appointments = await Appointment.find({ deleted: false }).deepPopulate('patient treatment report slot slot.dentist slot.clinic')
 
         sendnotify.Sendnoti("1", "");
 
@@ -27,7 +28,7 @@ export const list = async(req, res) => {
 export const findById = async(req, res) => {
     try {
         const { _id } = req.body
-        let appointment = await Appointment.findById({ _id }).deepPopulate('patient treatment slot slot.dentist slot.clinic')
+        let appointment = await Appointment.findById({ _id }).deepPopulate('patient treatment report slot slot.dentist slot.clinic')
 
         respondResult(res)(appointment)
     } catch (err) {
