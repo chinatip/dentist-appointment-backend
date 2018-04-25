@@ -63,39 +63,45 @@ export const findById = async(req, res) => {
         // let result = "your id is " + id + ", right?";
         // respondResult(res)(result)
 
-        var sendtext = "";
+        var sendlist = [];
         var appointlist = await getappointlist();
         if (appointlist.length == 0) {
             console.log("no appointment");
-            sendtext = "You have no appointment";
-            respondResult(res)(sendtext)
+            sendlist = [{ "error": "You have no appointment" }];
+            respondResult(res)(sendlist)
         } else {
             appointlist.forEach(appoint => {
                 var apppatient = appoint.patient;
                 var patientid = apppatient.facebookId;
                 if (id === patientid) {
-                    var appointslot = appoint.slot;
-                    var appointdate = new Date(appointslot.startTime);
-                    var apphour = appointdate.getHours();
-                    var appminute = appointdate.getMinutes();
-                    var sendtext = "you have appointment at " + apphour + "." + appminute + " on " + appointdate.getDate() + "/" + appointdate.getMonth();
-                    var clinic = appointslot.clinic;
-                    sendtext += " in " + clinic.name;
+                    sendlist.push(appoint);
+                    // var appointslot = appoint.slot;
+                    // var appointdate = new Date(appointslot.startTime);
+                    // var apphour = appointdate.getHours();
+                    // var appminute = appointdate.getMinutes();
+                    // var sendtext = "you have appointment at " + apphour + "." + appminute + " on " + appointdate.getDate() + "/" + appointdate.getMonth();
+                    // var clinic = appointslot.clinic;
+                    // sendtext += " in " + clinic.name;
 
-                    console.log("have appointment at " + apphour + "." + appminute);
-                    respondResult(res)(sendtext)
-                    return;
+                    // console.log("have appointment at " + apphour + "." + appminute);
+                    // respondResult(res)(sendtext)
+                    // break;
                 }
 
             });
-            console.log("No appoint");
-            var text = "No appoint for you"
-            respondErrors(res)(text)
+            if (sendlist.length > 0) {
+                respondResult(res)(sendlist)
+            } else {
+                console.log("No appoint");
+                sendlist = [{ "error": "No appoint for you" }];
+                respondErrors(res)(sendlist)
+            }
+
         }
 
     } catch (err) {
-        var text = "Find appointment error"
-        respondErrors(res)(text)
+        sendlist = [{ "error": "Find appointment error" }];
+        respondErrors(res)(sendlist)
     }
 }
 
