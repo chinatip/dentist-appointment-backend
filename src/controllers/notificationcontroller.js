@@ -89,7 +89,7 @@ export const findById = async(req, res) => {
 
             });
             console.log("No appoint");
-            var text = "Find appointment error"
+            var text = "No appoint for you"
             respondErrors(res)(text)
         }
 
