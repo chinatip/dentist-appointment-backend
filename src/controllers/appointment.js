@@ -18,7 +18,7 @@ export const list = async(req, res) => {
     try {
         let appointments = await Appointment.find({ deleted: false }).deepPopulate('patient treatment report slot slot.dentist slot.clinic')
 
-        sendnotify.Sendnoti("1", "");
+        //sendnotify.Sendnoti("1", "");
 
         respondResult(res)(appointments)
     } catch (err) {
