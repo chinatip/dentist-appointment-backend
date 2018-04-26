@@ -33,6 +33,17 @@ export const findById = async(req, res) => {
     }
 }
 
+export const findByPatientId = async(req, res) => {
+    try {
+        const { patient } = req.body
+        const report = await Report.find({ patient, deleted: false }).deepPopulate('patient dentist clinic')
+
+        respondResult(res)(report)
+    } catch (err) {
+        respondErrors(res)(err)
+    }
+}
+
 export const create = async(req, res) => {
     const report = Joi.validate(req.body, schema).value
 
