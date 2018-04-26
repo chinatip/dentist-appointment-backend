@@ -10,7 +10,8 @@ var schema = new Schema({
   dentist: { type: ObjectId, ref: 'Dentist' },
   clinic: { type: ObjectId, ref: 'Clinic' },
   data: Object,
-  price: Number,
+  note: { type: String, default: '' },
+  payment: { type: Object, default: null },
   deleted: { type: Boolean, default: false, select: false }
 })
 

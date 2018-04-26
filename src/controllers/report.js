@@ -3,13 +3,14 @@ import Joi from 'joi'
 import { respondResult, respondSuccess, respondErrors } from '../utils'
 import Report from '../models/report'
 
-const availableFields = ['patient', 'dentist', 'clinic', 'data', 'price']
+const availableFields = ['patient', 'dentist', 'clinic', 'data', 'note', 'payment']
 const schema = Joi.object().keys({
     patient: Joi.string(),
     dentist: Joi.string(),
     clinic: Joi.string(),
     data: Joi.object(),
-    price: Joi.number().optional()
+    note: Joi.string().optional(),
+    payment: Joi.object().optional()
 })
 
 export const list = async(req, res) => {
