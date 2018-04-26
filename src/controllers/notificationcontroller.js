@@ -10,8 +10,8 @@ import Patient from '../models/patient'
 function Sendnoti(data, sendid) {
     console.log(data + "_" + sendid);
     var message = "test 1"
-    var sid = "100001859704611"
-        //"2217425031604903";
+        // var sid = "100001859704611"
+    var sid = "2217425031604903";
     if (data) {
         message = data;
     }
@@ -25,7 +25,40 @@ function Sendnoti(data, sendid) {
     // 'https://radiant-reaches-17313.herokuapp.com/sendmessages'
     // "https://colossal-penalty.glitch.me/sendmessages"
     request({
-        "uri": "https://radiant-reaches-17313.herokuapp.com/sendmessages",
+        "uri": "https://colossal-penalty.glitch.me/sendmessages",
+        "method": "POST",
+        "json": resjson
+    }, (err, res, body) => {
+        if (!err) {
+            console.log('Sended!');
+        } else {
+            console.error(err);
+        }
+    });
+}
+
+function Sendnoti2(datatitle, datatext, sendid) {
+    console.log(datatitle + "_" + datatext + "_" + sendid);
+    var title = "test title";
+    var message = "test 1";
+    // var sid = "100001859704611"
+    var sid = "2217425031604903";
+    if (datatext) {
+        message = datatext;
+    }
+    if (datatitle) {
+        title = datatitle;
+    }
+    if (sendid != "") {
+        sid = sendid;
+    }
+    var resjson = {
+        title: title,
+        text: message,
+        id: sid,
+    };
+    request({
+        "uri": "https://colossal-penalty.glitch.me/sendmessages",
         "method": "POST",
         "json": resjson
     }, (err, res, body) => {
@@ -106,6 +139,7 @@ export const findById = async(req, res) => {
 }
 
 module.exports.Sendnoti = Sendnoti;
+module.exports.Sendnoti2 = Sendnoti2;
 module.exports.updateStatus = updateStatus;
 
 var timestart = true;
@@ -153,13 +187,18 @@ async function loadnotilist() {
                     var apphour = appointdate.getHours();
                     var appminute = appointdate.getMinutes();
                     if (apphour - 1 === chour && appminute === cminute) {
-                        var sendtext = "you have appointment at " + apphour + "." + appminute;
+                        //var sendtext = "you have appointment at " + apphour + "." + appminute;
                         var clinic = appointslot.clinic;
-                        sendtext += " in " + clinic.name;
+                        //sendtext += " in " + clinic.name;
                         var apppatient = appoint.patient;
-
+                        var treatment = appoint.treatment;
                         var sendid = apppatient.facebookId;
-                        Sendnoti(sendtext, sendid);
+
+                        //Sendnoti(sendtext, sendid);
+                        var titletext = "You have appoint ment";
+                        var subtext = "at " + apphour + "." + appminute + "\n in " + clinic.name + "\n";
+                        subtext += "\n Treatment: " + treatment.name;
+                        Sendnoti2(titletext, subtext, sendid);
                         console.log("have appointment at " + apphour + "." + appminute);
 
                     }
@@ -193,6 +232,12 @@ async function loadnotilisttest() {
 
             console.log("-----------------------------");
 
+            // var treatment = appoint.treatment;
+            // var sendid = apppatient.facebookId;
+            // var titletext = "You have appoint ment";
+            // var subtext = "at " + apphour + "." + appminute + "\n in " + clinic.name + "\n";
+            // subtext += "\n Treatment: " + treatment.name;
+            // Sendnoti2(titletext, subtext, "");
 
         });
 
