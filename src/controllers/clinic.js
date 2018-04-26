@@ -96,7 +96,7 @@ export const findClinicPatient = async(req, res) => {
     try {
         const { _id } = req.body
         let appointments = await Appointment.find({ deleted: false }).deepPopulate('patient slot slot.clinic')
-        const patients = _.map(appointments, (app) => {
+        let patients = _.map(appointments, (app) => {
             const { slot, patient } = app
 
             if (slot.clinic._id == _id) {
@@ -104,7 +104,9 @@ export const findClinicPatient = async(req, res) => {
             }
         })
 
-        respondResult(res)(_.filter(patients, (p) => p))
+        patients = _.filter(patients, (p) => p)
+        patients = _.uniqBy(patients, '_id')
+        respondResult(res)(patients)
     } catch (err) {
         respondErrors(res)(err)
     }

@@ -108,7 +108,7 @@ export const findPatientReports = async(req, res) => {
     try {
         const { _id } = req.body
         const reports = await Report.find({ deleted: false }).deepPopulate('dentist')
-        const patientReports = _.map(reports, (rep) => {
+        let patientReports = _.map(reports, (rep) => {
             const { patient } = rep
 
             if (patient == _id) {
@@ -116,7 +116,8 @@ export const findPatientReports = async(req, res) => {
             }
         })
 
-        respondResult(res)(_.filter(patientReports, (p) => p))
+        patientReports = _.filter(patientReports, (p) => p)
+        respondResult(res)(patientReports)
     } catch (err) {
         respondErrors(res)(err)
     }
