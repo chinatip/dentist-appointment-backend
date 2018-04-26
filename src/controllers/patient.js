@@ -2,6 +2,7 @@ import _ from 'lodash'
 import Joi from 'joi'
 import { respondResult, respondSuccess, respondErrors } from '../utils'
 import Patient from '../models/patient'
+import Report from '../models/report'
 
 const availableFields = ['firstname', 'lastname', 'phone', 'ID_type', 'ID', 'address', 'facebookId', 'fileId']
 const schema = Joi.object().keys({
@@ -98,6 +99,24 @@ export const remove = async(req, res) => {
         patient.save()
 
         respondSuccess(res)()
+    } catch (err) {
+        respondErrors(res)(err)
+    }
+}
+
+export const findPatientReports = async(req, res) => {
+    try {
+        const { _id } = req.body
+        const reports = await Report.find({ deleted: false }).deepPopulate('dentist')
+        const patientReports = _.map(reports, (rep) => {
+            const { patient } = rep
+
+            if (patient == _id) {
+                return rep
+            }
+        })
+
+        respondResult(res)(_.filter(patientReports, (p) => p))
     } catch (err) {
         respondErrors(res)(err)
     }

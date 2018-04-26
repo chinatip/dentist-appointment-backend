@@ -7,7 +7,7 @@ router.post('/create', create)
 router.post('/update', update)
 router.post('/delete', remove)
 router.post('/find', findById)
-router.post('/findPatient', findByPatientId)
+router.post('/findByPatient', findByPatientId)
 router.post('/multiCreate', multiCreate)
 
 export default router
