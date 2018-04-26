@@ -3,6 +3,7 @@ import Joi from 'joi'
 import { respondResult, respondSuccess, respondErrors } from '../utils'
 import Patient from '../models/patient'
 import Report from '../models/report'
+import Appointment from '../models/appointment'
 
 const availableFields = ['firstname', 'lastname', 'phone', 'ID_type', 'ID', 'address', 'facebookId', 'fileId']
 const schema = Joi.object().keys({
@@ -118,6 +119,25 @@ export const findPatientReports = async(req, res) => {
 
         patientReports = _.filter(patientReports, (p) => p)
         respondResult(res)(patientReports)
+    } catch (err) {
+        respondErrors(res)(err)
+    }
+}
+
+export const findPatientAppointments = async(req, res) => {
+    try {
+        const { _id } = req.body
+        const appointments = await Appointment.find({ deleted: false }).deepPopulate('treatment report slot slot.dentist slot.clinic')
+        let patientAppointments = _.map(appointments, (app) => {
+            const { patient } = app
+
+            if (patient == _id) {
+                return app
+            }
+        })
+
+        patientAppointments = _.filter(patientAppointments, (a) => a)
+        respondResult(res)(patientAppointments)
     } catch (err) {
         respondErrors(res)(err)
     }
