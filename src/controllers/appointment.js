@@ -37,6 +37,19 @@ export const findById = async(req, res) => {
     }
 }
 
+export const findByFBId = async(req, res) => {
+    try {
+        const { facebookId } = req.body
+        let appointments = await Appointment.find({ deleted: false }).deepPopulate('patient treatment report slot slot.dentist slot.clinic')
+        
+        appointments = appointments.filter((app) => app.patient.facebookId === facebookId)
+        
+        respondResult(res)(appointments)
+    } catch (err) {
+        respondErrors(res)(err)
+    }
+}
+
 export const create = async(req, res) => {
     const appointment = Joi.validate(req.body, schema).value
 
