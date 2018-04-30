@@ -126,14 +126,14 @@ export const findById = async(req, res) => {
                 respondResult(res)(sendlist)
             } else {
                 console.log("No appoint");
-                sendlist = [{ "error": "No appoint for you" }];
+                sendlist = [{ "error": "ไม่มีการนัดหมายของคุณในตอนนี้" }];
                 respondErrors(res)(sendlist)
             }
 
         }
 
     } catch (err) {
-        sendlist = [{ "error": "Find appointment error" }];
+        sendlist = [{ "error": "หาการนัดหมายผิดพลาด" }];
         respondErrors(res)(sendlist)
     }
 }
@@ -196,9 +196,9 @@ async function loadnotilist() {
                         var sendid = apppatient.facebookId;
 
                         //Sendnoti(sendtext, sendid);
-                        var titletext = "You have appoint ment";
-                        var subtext = "at " + apphour + "." + appminute + "\n in " + clinic.name + "\n";
-                        subtext += "\n Treatment: " + treatment.name;
+                        var titletext = "คุณมีการนัดหมาย";
+                        var subtext = "เวลา " + apphour + "." + appminute + "\n ที่ " + clinic.name + "\n";
+                        subtext += "\n การรักษา: " + treatment.name;
                         Sendnoti2(titletext, subtext, sendid);
                         console.log("have appointment at " + apphour + "." + appminute);
 
