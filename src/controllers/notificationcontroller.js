@@ -77,9 +77,9 @@ function updateStatus(appoint, appointbefore) {
         var appointdate = new Date(appointslot.startTime);
         var apphour = appointdate.getHours();
         var appminute = appointdate.getMinutes();
-        var sendtext = "your appointment status at " + apphour + "." + appminute;
+        var sendtext = "สถานะการนัดหมายของคุณเวลา " + apphour + "." + appminute;
         var clinic = appointslot.clinic;
-        sendtext += " in " + clinic.name + " are changed";
+        sendtext += " ที่ " + clinic.name + " ถูกเปลี่ยนแปลง";
         var apppatient = appoint.patient;
 
         var sendid = apppatient.facebookId;
@@ -100,7 +100,7 @@ export const findById = async(req, res) => {
         var appointlist = await getappointlist();
         if (appointlist.length == 0) {
             console.log("no appointment");
-            sendlist = [{ "error": "You have no appointment" }];
+            sendlist = [{ "error": "ไม่มีการนัดหมายของคุณในตอนนี้" }];
             respondResult(res)(sendlist)
         } else {
             appointlist.forEach(appoint => {
