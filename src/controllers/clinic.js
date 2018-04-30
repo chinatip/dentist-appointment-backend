@@ -3,6 +3,7 @@ import Joi from 'joi'
 import { respondResult, respondSuccess, respondErrors } from '../utils'
 import Clinic from '../models/clinic'
 import Appointment from '../models/appointment'
+import Patient from '../models/patient'
 
 var sendnotify = require('./notificationcontroller');
 
@@ -104,8 +105,20 @@ export const findClinicPatient = async(req, res) => {
             }
         })
 
+        let allPatients = await Patient.find({ deleted: false })
+        allPatients = allPatients.filter((p) => {
+            if (p.fileByClinic) {
+                return p.fileByClinic[_id]
+            }
+        })
+
+        patients = _.concat(patients, allPatients)
         patients = _.filter(patients, (p) => p)
-        patients = _.uniqBy(patients, '_id')
+
+        const patientsByID = {}
+        patients.forEach((p) => patientsByID[p._id] = p)
+        patients = _.toArray(patientsByID)
+        
         respondResult(res)(patients)
     } catch (err) {
         respondErrors(res)(err)

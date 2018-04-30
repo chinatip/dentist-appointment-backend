@@ -5,7 +5,7 @@ import Patient from '../models/patient'
 import Report from '../models/report'
 import Appointment from '../models/appointment'
 
-const availableFields = ['firstname', 'lastname', 'phone', 'ID_type', 'ID', 'address', 'facebookId', 'fileIdByClinic']
+const availableFields = ['firstname', 'lastname', 'phone', 'ID_type', 'ID', 'address', 'facebookId', 'fileByClinic']
 const schema = Joi.object().keys({
     firstname: Joi.string(),
     lastname: Joi.string(),
@@ -14,7 +14,7 @@ const schema = Joi.object().keys({
     ID: Joi.string().optional(),
     address: Joi.object().optional(),
     facebookId: Joi.string(),
-    fileIdByClinic: Joi.object().optional(),
+    fileByClinic: Joi.object().optional(),
 })
 
 export const list = async(req, res) => {
