@@ -11,7 +11,7 @@ var schema = new Schema({
   ID: String,
   address: Object,
   facebookId: String,
-  fileId: String,
+  fileIdByClinic: Object,
   deleted: { type: Boolean, default: false, select: false }
 })
 
