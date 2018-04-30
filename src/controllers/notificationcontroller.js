@@ -154,8 +154,9 @@ var counttime2 = setInterval(function() {
             console.log("new hour");
             //console.log("H " + hour + " M " + minute);
             loadnotilist();
+            //loadnotilisttest2();
 
-        } else {
+        } else if (minute % 14 == 0) {} else {
             console.log("current hour");
             //loadnotilist();
             loadnotilisttest();
@@ -367,4 +368,50 @@ async function getslotlist() {
 function getslotByid(id) {
     return DentistTimeslot.findById(id).populate('dentist').populate('clinic')
 
+}
+
+async function loadnotilisttest2() {
+    var date = new Date();
+    var cday = date.getDate();
+    var cmonth = date.getMonth();
+    var cminute = date.getMinutes();
+    var chour = date.getHours();
+    console.log("Mm:" + cminute);
+    try {
+        var appointlist = await getappointlist();
+        if (appointlist.length == 0) {
+            console.log("no appointment");
+            // var clname = await getclinicByname("แพท")
+            // console.log(clname);
+        } else {
+            appointlist.forEach(appoint => {
+                var appointslot = appoint.slot;
+                var appointdate = new Date(appointslot.startTime);
+                if (true) {
+                    var apphour = appointdate.getHours();
+                    var appminute = appointdate.getMinutes();
+                    if (appminute === cminute) {
+                        //var sendtext = "you have appointment at " + apphour + "." + appminute;
+                        var clinic = appointslot.clinic;
+                        //sendtext += " in " + clinic.name;
+                        var apppatient = appoint.patient;
+                        var treatment = appoint.treatment;
+                        var sendid = apppatient.facebookId;
+
+                        //Sendnoti(sendtext, sendid);
+                        var titletext = "You have appoint ment";
+                        var subtext = "at " + apphour + "." + appminute + "\n in " + clinic.name + "\n";
+                        subtext += "\n Treatment: " + treatment.name;
+                        Sendnoti2(titletext, subtext, sendid);
+                        console.log("have appointment at " + apphour + "." + appminute + subtext);
+
+                    }
+                }
+
+            });
+        }
+    } catch (error) {
+        console.log("check appointment error");
+
+    }
 }
