@@ -159,7 +159,7 @@ var counttime2 = setInterval(function() {
         } else if (minute % 14 == 0) {} else {
             console.log("current hour");
             //loadnotilist();
-            loadnotilisttest();
+            //loadnotilisttest();
         }
     } else {
         // console.log("stop");
