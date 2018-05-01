@@ -158,7 +158,7 @@ var counttime2 = setInterval(function() {
 
         } else if (minute % 14 == 0) {} else {
             console.log("current hour");
-            loadnotilist();
+            //loadnotilist();
             loadnotilisttest();
         }
     } else {
@@ -204,7 +204,7 @@ async function loadnotilist() {
 
                         //Sendnoti(sendtext, sendid);
                         var titletext = "คุณมีการนัดหมาย";
-                        var subtext = "เวลา " + apphour + "." + appminute + "\n ที่ " + clinic.name + "\n";
+                        var subtext = "เวลา " + (apphour + 7) + "." + appminute + "\n ที่ " + clinic.name + "\n";
                         subtext += "\n การรักษา: " + treatment.name;
                         Sendnoti2(titletext, subtext, sendid);
                         console.log("have appointment at " + apphour + "." + appminute);
