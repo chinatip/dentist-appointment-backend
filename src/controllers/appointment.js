@@ -29,7 +29,7 @@ export const list = async(req, res) => {
 export const findById = async(req, res) => {
     try {
         const { _id } = req.body
-        let appointment = await Appointment.findById({ _id }).deepPopulate('patient treatment report slot slot.dentist slot.clinic')
+        let appointment = await Appointment.findById({ deleted: false, _id }).deepPopulate('patient treatment report slot slot.dentist slot.clinic')
 
         respondResult(res)(appointment)
     } catch (err) {

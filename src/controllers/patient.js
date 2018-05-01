@@ -30,7 +30,7 @@ export const list = async(req, res) => {
 export const findById = async(req, res) => {
     try {
         const { _id } = req.body
-        const patient = await Patient.findById({ _id })
+        const patient = await Patient.findById({ deleted: false, _id })
         
         respondResult(res)(patient)
     } catch (err) {

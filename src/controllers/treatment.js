@@ -24,7 +24,7 @@ export const list = async(req, res) => {
 export const findById = async(req, res) => {
     try {
         const { _id } = req.body
-        const treatment = await Treatment.findById({ _id })
+        const treatment = await Treatment.findById({ deleted: false, _id })
 
         respondResult(res)(treatment)
     } catch (err) {
