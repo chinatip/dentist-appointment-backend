@@ -158,8 +158,8 @@ var counttime2 = setInterval(function() {
 
         } else if (minute % 14 == 0) {} else {
             console.log("current hour");
-            //loadnotilist();
-            //loadnotilisttest();
+            loadnotilist();
+            loadnotilisttest();
         }
     } else {
         // console.log("stop");
@@ -184,10 +184,17 @@ async function loadnotilist() {
             appointlist.forEach(appoint => {
                 var appointslot = appoint.slot;
                 var appointdate = new Date(appointslot.startTime);
-                if (appointdate.getDate() === cday && appointdate.getMonth() === cmonth) {
-                    var apphour = appointdate.getHours();
+                console.log("-----------------------------");
+                console.log(cday + "_" + cmonth);
+                console.log(appointdate.getDate() + "_" + appointdate.getMonth());
+                if (appointdate.getDate() == cday && appointdate.getMonth() == cmonth) {
+                    console.log("pass1");
+                    var apphour = appointdate.getHours() - 7;
                     var appminute = appointdate.getMinutes();
-                    if (apphour - 1 === chour && appminute === cminute) {
+                    console.log(apphour + "_" + appminute);
+                    console.log(chour + "_" + cminute);
+                    if (apphour - 1 == chour && appminute == cminute) {
+                        console.log("pass2");
                         //var sendtext = "you have appointment at " + apphour + "." + appminute;
                         var clinic = appointslot.clinic;
                         //sendtext += " in " + clinic.name;
@@ -221,7 +228,7 @@ async function loadnotilisttest() {
             var appointslot = appoint.slot;
             var appointdate = new Date(appointslot.startTime);
             console.log(appointdate.getDate() + " " + appointdate.getMonth());
-            var apphour = appointdate.getHours();
+            var apphour = appointdate.getHours() - 7;
             var appminute = appointdate.getMinutes();
             var sendtext = apphour + "." + appminute;
             var clinic = appointslot.clinic;
@@ -388,7 +395,7 @@ async function loadnotilisttest2() {
                 var appointslot = appoint.slot;
                 var appointdate = new Date(appointslot.startTime);
                 if (true) {
-                    var apphour = appointdate.getHours();
+                    var apphour = appointdate.getHours() - 7;
                     var appminute = appointdate.getMinutes();
                     if (appminute === cminute) {
                         //var sendtext = "you have appointment at " + apphour + "." + appminute;
