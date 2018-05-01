@@ -24,7 +24,7 @@ export const list = async(req, res) => {
 export const findById = async(req, res) => {
     try {
         const { _id } = req.body
-        const dentist = await Dentist.findById({ _id }).populate('treatments')
+        const dentist = await Dentist.findById({ deleted: false, _id }).populate('treatments')
 
         respondResult(res)(dentist)
     } catch (err) {

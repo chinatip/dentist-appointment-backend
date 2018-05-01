@@ -28,7 +28,7 @@ export const list = async(req, res) => {
 export const findById = async(req, res) => {
     try {
         const { _id } = req.body
-        const clinic = await Clinic.findById({ _id }).deepPopulate('dentists dentists.treatments')
+        const clinic = await Clinic.findById({ deleted: false, _id }).deepPopulate('dentists dentists.treatments')
 
         respondResult(res)(clinic)
     } catch (err) {
