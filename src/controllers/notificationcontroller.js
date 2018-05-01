@@ -185,26 +185,26 @@ async function loadnotilist() {
                 var appointslot = appoint.slot;
                 var appointdate = new Date(appointslot.startTime);
                 console.log("-----------------------------");
-                console.log(cday + "_" + cmonth);
-                console.log(appointdate.getDate() + "_" + appointdate.getMonth());
+                //console.log(cday + "_" + cmonth);
+                //console.log(appointdate.getDate() + "_" + appointdate.getMonth());
                 if (appointdate.getDate() == cday && appointdate.getMonth() == cmonth) {
                     console.log("pass1");
                     var apphour = appointdate.getHours() - 7;
                     var appminute = appointdate.getMinutes();
-                    console.log(apphour + "_" + appminute);
-                    console.log(chour + "_" + cminute);
+                    //console.log(apphour + "_" + appminute);
+                    //console.log(chour + "_" + cminute);
                     if (apphour - 1 == chour && appminute == cminute) {
-                        console.log("pass2");
+                        //console.log("pass2");
                         //var sendtext = "you have appointment at " + apphour + "." + appminute;
                         var clinic = appointslot.clinic;
                         //sendtext += " in " + clinic.name;
                         var apppatient = appoint.patient;
                         var treatment = appoint.treatment;
                         var sendid = apppatient.facebookId;
-
+                        //('0' + appointdate.getMinutes()).slice(-2)
                         //Sendnoti(sendtext, sendid);
                         var titletext = "คุณมีการนัดหมาย";
-                        var subtext = "เวลา " + (apphour + 7) + ":" + appminute + "\n ที่ " + clinic.name + "\n";
+                        var subtext = "เวลา " + (apphour + 7) + ":" + ('0' + appminute).slice(-2) + "\n ที่ " + clinic.name + "\n";
                         subtext += "\n การรักษา: " + treatment.name;
                         Sendnoti2(titletext, subtext, sendid);
                         console.log("have appointment at " + apphour + "." + appminute);
