@@ -4,7 +4,7 @@ import { respondResult, respondSuccess, respondErrors } from '../utils'
 import Clinic from '../models/clinic'
 import Appointment from '../models/appointment'
 import Patient from '../models/patient'
-import { generateDentistToken, resolveDentistFromToken } from '../utils/token'
+import { generateClinicToken } from '../utils/token'
 
 var sendnotify = require('./notificationcontroller');
 
@@ -139,9 +139,9 @@ export const login = async(req, res) => {
             return 
         }
 
-        const { token } = await generateClinicToken(clinic._id)
+        const c = await generateClinicToken(clinic._id)
 
-        respondResult(res)({ token })
+        respondResult(res)(c)
     } catch (err) {
         respondErrors(res)(err)
     }

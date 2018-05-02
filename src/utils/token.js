@@ -3,7 +3,7 @@ import { Token } from '../models'
 export const generateClinicToken = async (id) => {
   const t = new Token({ clinic: id })
   await t.save()
-  return token
+  return t
 }
 
 export const resolveClinicFromToken = async (token) => {
