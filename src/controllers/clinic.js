@@ -30,7 +30,6 @@ export const findById = async(req, res) => {
     try {
         const { _id } = req.body
         const clinic = await Clinic.findOne({ deleted: false, _id }).deepPopulate('dentists dentists.treatments')
-
         respondResult(res)(clinic)
     } catch (err) {
         respondErrors(res)(err)
@@ -139,9 +138,9 @@ export const login = async(req, res) => {
             return 
         }
 
-        const c = await generateClinicToken(clinic._id)
-
-        respondResult(res)(c)
+        const token = await generateClinicToken(String(clinic._id))
+        clinic.token = token
+        respondResult(res)(clinic)
     } catch (err) {
         respondErrors(res)(err)
     }
