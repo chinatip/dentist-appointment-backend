@@ -1,13 +1,14 @@
 import { Router } from 'express'
 import { list, create, update, remove, findById, findByPatientId, multiCreate } from '../controllers/report'
+import auth from '../middlewares/auth'
 
 const router = Router()
-router.post('/list', list)
-router.post('/create', create)
-router.post('/update', update)
+router.post('/list', auth, list)
+router.post('/create', auth, create)
+router.post('/update', auth, update)
 router.post('/delete', remove)
-router.post('/find', findById)
-router.post('/findByPatient', findByPatientId)
+router.post('/find', auth, findById)
+router.post('/findByPatient', auth, findByPatientId)
 router.post('/multiCreate', multiCreate)
 
 export default router

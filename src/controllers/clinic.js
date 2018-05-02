@@ -4,6 +4,7 @@ import { respondResult, respondSuccess, respondErrors } from '../utils'
 import Clinic from '../models/clinic'
 import Appointment from '../models/appointment'
 import Patient from '../models/patient'
+import { generateDentistToken, resolveDentistFromToken } from '../utils/token'
 
 var sendnotify = require('./notificationcontroller');
 
@@ -12,7 +13,7 @@ const schema = Joi.object().keys({
     name: Joi.string(),
     phone: Joi.string(),
     address: Joi.object().optional(),
-    dentists: [Joi.string()]
+    dentists: Joi.array().items(Joi.string())
 })
 
 export const list = async(req, res) => {
@@ -120,6 +121,27 @@ export const findClinicPatient = async(req, res) => {
         patients = _.toArray(patientsByID)
         
         respondResult(res)(patients)
+    } catch (err) {
+        respondErrors(res)(err)
+    }
+}
+
+const hash = p => p
+
+export const login = async(req, res) => {
+    try {
+        const { username, password } = req.body
+        const hash_password = hash(password)
+        const clinic = await Clinic.findOne({ username, hash_password })
+        if (!clinic) {
+            // 401 un auth
+            res.status(401).send({ message: 'auth failed' })
+            return 
+        }
+
+        const { token } = await generateClinicToken(clinic._id)
+
+        respondResult(res)({ token })
     } catch (err) {
         respondErrors(res)(err)
     }

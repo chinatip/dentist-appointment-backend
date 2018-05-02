@@ -8,7 +8,7 @@ const schema = Joi.object().keys({
     firstname: Joi.string(),
     lastname: Joi.string(),
     phone: Joi.string().optional(),
-    treatments: [Joi.string()]
+    treatments: Joi.array().items(Joi.string())
 })
 
 export const list = async(req, res) => {

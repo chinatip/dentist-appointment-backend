@@ -9,6 +9,8 @@ var schema = new Schema({
   name: String,
   phone: String,
   address: Object,
+  username: { type: String },
+  hash_password: { type: String, select: false },
   dentists: [{ type: ObjectId, ref: 'Dentist' }],
   deleted: { type: Boolean, default: false, select: false }
 })
